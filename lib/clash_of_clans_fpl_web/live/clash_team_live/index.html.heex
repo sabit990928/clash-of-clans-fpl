@@ -1,0 +1,48 @@
+<.header>
+  Listing Teams
+  <:actions>
+    <.link patch={~p"/teams/new"}>
+      <.button>New Team</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="teams"
+  rows={@streams.teams}
+  row_click={fn {_id, team} -> JS.navigate(~p"/teams/#{team}") end}
+>
+  <:col :let={{_id, team}} label=""><%= team.name %></:col>
+  <:col :let={{_id, team}} label="Managers"><%= team.manager_count %></:col>
+  <:col :let={{_id, team}} label="W"><%= team.win %></:col>
+  <:col :let={{_id, team}} label="D"><%= team.draw %></:col>
+  <:col :let={{_id, team}} label="L"><%= team.lose %></:col>
+  <%!-- <:col :let={{_id, team}} label="Score (total avg)"><%= team.avg_score %></:col> --%>
+  <:col :let={{_id, team}} label="Score (total avg)"><%= team.fpl_points %></:col>
+  <:col :let={{_id, team}} label="Pts"><%= team.points %></:col>
+  <:action :let={{_id, team}}>
+    <div class="sr-only">
+      <.link navigate={~p"/teams/#{team}"}>Show</.link>
+    </div>
+    <.link patch={~p"/teams/#{team}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, team}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: team.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal :if={@live_action in [:new, :edit]} id="team-modal" show on_cancel={JS.patch(~p"/teams")}>
+  <.live_component
+    module={ClashOfClansFplWeb.TeamLive.FormComponent}
+    id={@team.id || :new}
+    title={@page_title}
+    action={@live_action}
+    team={@team}
+    patch={~p"/teams"}
+  />
+</.modal>

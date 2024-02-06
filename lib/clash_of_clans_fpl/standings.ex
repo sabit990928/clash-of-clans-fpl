@@ -200,6 +200,62 @@ defmodule ClashOfClansFpl.Standings do
     end
   end
 
+  def save_gameweek_league_managers(gameweek) do
+    leagues_list = [
+      2_339_785,
+      2_340_021,
+      2_340_440,
+      2_340_461,
+      2_339_736,
+      2_339_918,
+      2_339_789,
+      2_340_487,
+      2_340_494,
+      2_340_497,
+      2_339_788,
+      2_340_499,
+      2_339_797,
+      2_339_778,
+      2_340_503,
+      2_340_513,
+      2_340_517,
+      2_339_793,
+      2_339_997,
+      2_340_559
+    ]
+
+    duplicate_manager_ids = duplicate_managers_ids()
+
+    for league_id <- leagues_list do
+      page = 1
+
+      league_link =
+        "https://fantasy.premierleague.com/api/leagues-classic/#{league_id}/standings/?page_standings=#{page}"
+
+      body = poison_request(league_link)
+
+      has_next_page? = body["standings"]["has_next"]
+
+      _all_managers =
+        get_all_managers(league_id, page + 1, body["standings"]["results"], has_next_page?)
+        |> Enum.filter(fn manager -> manager["entry"] not in duplicate_manager_ids end)
+        |> Enum.map(fn manager ->
+          alias ClashOfClansFpl.Managers
+
+          Managers.create_manager(%{
+            name: manager["player_name"],
+            gameweek: gameweek,
+            team_name: manager["entry_name"],
+            league_id: league_id,
+            team_id: manager["entry"],
+            league_name: body["league"]["name"]
+          })
+        end)
+
+      :ok
+    end
+  end
+
   # Float.round/1
 
   def calculate_all_average_league_points(gameweek) do
@@ -243,12 +299,12 @@ defmodule ClashOfClansFpl.Standings do
   # "https://fantasy.premierleague.com/api/entry/5018161/history/"
   # https://fantasy.premierleague.com/api/fixtures/?event=18
 
-  defp calculate_average_league_points(
-         league_id,
-         gameweek,
-         duplicate_manager_ids,
-         gameweek_average
-       ) do
+  def calculate_average_league_points(
+        league_id,
+        gameweek,
+        duplicate_manager_ids,
+        gameweek_average
+      ) do
     page = 1
 
     league_link =
@@ -262,7 +318,7 @@ defmodule ClashOfClansFpl.Standings do
       get_all_managers(league_id, page + 1, body["standings"]["results"], has_next_page?)
       |> Enum.filter(fn manager -> manager["entry"] not in duplicate_manager_ids end)
 
-    sum =
+    managers_current_gw =
       Enum.map(all_managers, fn manager_data ->
         entry = manager_data["entry"]
 
@@ -270,9 +326,42 @@ defmodule ClashOfClansFpl.Standings do
           poison_request("https://fantasy.premierleague.com/api/entry/#{entry}/history/")
 
         gameweeks = history_body["current"]
-        current_gameweek = Enum.find(gameweeks, fn gw -> gw["event"] == gameweek end)
+        {manager_data["entry"], Enum.find(gameweeks, fn gw -> gw["event"] == gameweek end)}
+      end)
 
+    sorted_managers =
+      Enum.map(managers_current_gw, fn {name, current_gameweek} ->
+        {name, current_gameweek["points"] - current_gameweek["event_transfers_cost"]}
+      end)
+      |> Enum.sort_by(fn {_id, pure_points} -> pure_points end, :desc)
+
+    {_id, max_points} =
+      sorted_managers
+      |> hd()
+
+    all_mvp_managers =
+      Enum.filter(sorted_managers, fn {_id, points} -> points == max_points end)
+
+    # maybe refactor that logic
+    Enum.each(all_mvp_managers, fn {fpl_id, _points} ->
+      alias ClashOfClansFpl.Managers
+
+      manager =
+        from(m in Managers.Manager, where: m.team_id == ^fpl_id and m.gameweek == ^gameweek)
+        |> Repo.one()
+
+      Managers.update_manager(manager, %{mvp?: true})
+    end)
+
+    sum =
+      Enum.map(managers_current_gw, fn {_id, current_gameweek} ->
         current_gameweek["points"] - current_gameweek["event_transfers_cost"]
+      end)
+      |> Enum.sum()
+
+    hits_sum =
+      Enum.map(managers_current_gw, fn {_id, current_gameweek} ->
+        current_gameweek["event_transfers_cost"]
       end)
       |> Enum.sum()
 
@@ -284,7 +373,32 @@ defmodule ClashOfClansFpl.Standings do
         gameweek_average
       end
 
-    {body["league"]["name"], body["league"]["id"], average, length(all_managers)}
+    hits_average =
+      if length(all_managers) > 0 && hits_sum !== 0 do
+        hits_sum / length(all_managers)
+      else
+        0
+      end
+
+    {body["league"]["name"], body["league"]["id"], average, length(all_managers), hits_average}
+  end
+
+  # Write implementation here
+  defp get_new_managers(_, _, data, false = _has_next_page?) do
+    data
+  end
+
+  defp get_new_managers(league_id, page, data, true = _has_next_page?) do
+    league_link =
+      "https://fantasy.premierleague.com/api/leagues-classic/#{league_id}/standings/?page_standings=#{page}"
+
+    body = poison_request(league_link)
+
+    has_next_page? = body["standings"]["has_next"]
+
+    data = data ++ body["standings"]["results"]
+
+    get_all_managers(league_id, page + 1, data, has_next_page?)
   end
 
   defp get_all_managers(_, _, data, false = _has_next_page?) do
@@ -344,13 +458,13 @@ defmodule ClashOfClansFpl.Standings do
       team_1 = get_team!(team_h_id)
       team_2 = get_team!(team_a_id)
 
-      {_, _, team_1_avg, team_1_managers} =
-        Enum.find(average_league_points, fn {_, fpl_league_id, _, _} ->
+      {_, _, team_1_avg, team_1_managers, _} =
+        Enum.find(average_league_points, fn {_, fpl_league_id, _, _, _} ->
           team_1.fpl_league_id == fpl_league_id
         end)
 
-      {_, _, team_2_avg, team_2_managers} =
-        Enum.find(average_league_points, fn {_, fpl_league_id, _, _} ->
+      {_, _, team_2_avg, team_2_managers, _} =
+        Enum.find(average_league_points, fn {_, fpl_league_id, _, _, _} ->
           team_2.fpl_league_id == fpl_league_id
         end)
 
@@ -405,6 +519,57 @@ defmodule ClashOfClansFpl.Standings do
             manager_count: team_2_managers
           })
       end
+
+      {"#{team_1.name} #{team_1_avg} - #{team_2_avg} #{team_2.name}"}
+    end
+  end
+
+  def just_play_games(gameweek) do
+    average_league_points = calculate_all_average_league_points(gameweek)
+
+    link = "https://fantasy.premierleague.com/api/fixtures/?event=#{gameweek}"
+
+    fixtures = poison_request(link)
+
+    # team_h, team_a
+    for fixture <- fixtures do
+      team_h_id = fixture["team_h"]
+      team_a_id = fixture["team_a"]
+
+      team_1 = get_team!(team_h_id)
+      team_2 = get_team!(team_a_id)
+
+      {_, _, team_1_avg, team_1_managers, team_1_hits_avg} =
+        Enum.find(average_league_points, fn {_, fpl_league_id, _, _, _} ->
+          team_1.fpl_league_id == fpl_league_id
+        end)
+
+      {_, _, team_2_avg, team_2_managers, team_2_hits_avg} =
+        Enum.find(average_league_points, fn {_, fpl_league_id, _, _, _} ->
+          team_2.fpl_league_id == fpl_league_id
+        end)
+
+      # maybe save result to db
+
+      alias ClashOfClansFpl.Fixtures
+
+      Fixtures.create_fixture(%{
+        team_home_id: team_h_id,
+        team_home_score: team_1_avg,
+        team_home_name: team_1.name,
+        team_away_id: team_a_id,
+        team_away_score: team_2_avg,
+        team_away_name: team_2.name,
+        gameweek: gameweek,
+        team_h_manager_count: team_1_managers,
+        team_a_manager_count: team_2_managers,
+        team_h_id: team_h_id,
+        team_a_id: team_a_id,
+        team_h_avg_hits: team_1_hits_avg,
+        team_a_avg_hits: team_2_hits_avg,
+        team_h_score: fixture["team_h_score"],
+        team_a_score: fixture["team_a_score"]
+      })
 
       {"#{team_1.name} #{team_1_avg} - #{team_2_avg} #{team_2.name}"}
     end
@@ -574,9 +739,19 @@ defmodule ClashOfClansFpl.Standings do
 
     event["average_entry_score"]
   end
+
+  def prepare_csv() do
+    uuid = Ecto.UUID.generate()
+    file_path = Path.join(System.tmp_dir!(), uuid)
+
+    teams = Repo.all(Team) |> Enum.map(fn team -> [team.name, team.points] end)
+
+    csv = teams |> CSV.encode() |> Enum.to_list() |> to_string()
+    # csv = teams |> CSV.encode()
+
+    File.write(file_path, csv)
+  end
 end
 
 # Standings.list_duplicate_managers()
 # Standings.play_games(gameweek)
-
-# %{ 1967512, "Arzlan Kaz", "GROOOT"} => 2,

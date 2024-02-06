@@ -13,6 +13,8 @@ defmodule ClashOfClansFpl.Standings.Team do
     field :fpl_points, :integer
     field :fpl_id, :integer
     field :fpl_league_id, :integer
+    field :last_position, :integer
+    field :current_position, :integer
 
     timestamps(type: :utc_datetime)
   end
@@ -30,7 +32,9 @@ defmodule ClashOfClansFpl.Standings.Team do
       :avg_score,
       :fpl_points,
       :fpl_id,
-      :fpl_league_id
+      :fpl_league_id,
+      :last_position,
+      :current_position
     ])
     |> validate_required([
       :name,

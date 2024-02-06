@@ -1,0 +1,31 @@
+<.header>
+  Manager <%= @manager.id %>
+  <:subtitle>This is a manager record from your database.</:subtitle>
+  <:actions>
+    <.link patch={~p"/managers/#{@manager}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit manager</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Gameweek"><%= @manager.gameweek %></:item>
+  <:item title="Team name"><%= @manager.team_name %></:item>
+  <:item title="Name"><%= @manager.name %></:item>
+  <:item title="League"><%= @manager.league_id %></:item>
+  <:item title="Team"><%= @manager.team_id %></:item>
+  <:item title="League name"><%= @manager.league_name %></:item>
+</.list>
+
+<.back navigate={~p"/managers"}>Back to managers</.back>
+
+<.modal :if={@live_action == :edit} id="manager-modal" show on_cancel={JS.patch(~p"/managers/#{@manager}")}>
+  <.live_component
+    module={ClashOfClansFplWeb.ManagerLive.FormComponent}
+    id={@manager.id}
+    title={@page_title}
+    action={@live_action}
+    manager={@manager}
+    patch={~p"/managers/#{@manager}"}
+  />
+</.modal>

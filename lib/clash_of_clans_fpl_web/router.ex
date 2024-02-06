@@ -27,6 +27,22 @@ defmodule ClashOfClansFplWeb.Router do
 
     live "/teams/:id", TeamLive.Show, :show
     live "/teams/:id/show/edit", TeamLive.Show, :edit
+
+    # Fixtures
+    live "/fixtures", FixtureLive.Index, :index
+    live "/fixtures/new", FixtureLive.Index, :new
+    live "/fixtures/:id/edit", FixtureLive.Index, :edit
+
+    live "/fixtures/:id", FixtureLive.Show, :show
+    live "/fixtures/:id/show/edit", FixtureLive.Show, :edit
+
+    # Managers
+    live "/managers", ManagerLive.Index, :index
+    live "/managers/new", ManagerLive.Index, :new
+    live "/managers/:id/edit", ManagerLive.Index, :edit
+
+    live "/managers/:id", ManagerLive.Show, :show
+    live "/managers/:id/show/edit", ManagerLive.Show, :edit
   end
 
   # Other scopes may use custom stacks.
@@ -138,5 +154,47 @@ defmodule ClashOfClansFplWeb.Router do
     {"Spurs 78 - 79 Bournemouth"},
     {"Liverpool 77 - 78 Newcastle"},
     {"West Ham 74 - 85 Brighton"}
+  ]
+
+  # GW 21
+  [
+    {"Burnley 70 - 65 Luton"},
+    {"Chelsea 52 - 23 Fulham"},
+    {"Newcastle 53 - 59 Man City"},
+    {"Everton 60 - 63 Aston Villa"},
+    {"Man Utd 54 - 61 Spurs"},
+    {"Arsenal 58 - 66 Crystal Palace"},
+    {"Brentford 47 - 57 Nott'm Forest"},
+    {"Sheffield Utd 48 - 52 West Ham"},
+    {"Bournemouth 61 - 60 Liverpool"},
+    {"Brighton 65 - 52 Wolves"}
+  ]
+
+  # GW 22
+  [
+    {"Nott'm Forest 49 - 54 Arsenal"},
+    {"Fulham 48 - 55 Everton"},
+    {"Luton 54 - 55 Brighton"},
+    {"Crystal Palace 59 - 63 Sheffield Utd"},
+    {"Aston Villa 54 - 55 Newcastle"},
+    {"Man City 57 - 56 Burnley"},
+    {"Spurs 56 - 52 Brentford"},
+    {"Liverpool 57 - 58 Chelsea"},
+    {"West Ham 57 - 55 Bournemouth"},
+    {"Wolves 53 - 55 Man Utd"}
+  ]
+
+  # GW 23
+  [
+    {"Everton 75 - 67 Spurs"},
+    {"Brighton 75 - 72 Crystal Palace"},
+    {"Burnley 76 - 54 Fulham"},
+    {"Newcastle 70 - 71 Luton"},
+    {"Sheffield Utd 50 - 79 Aston Villa"},
+    {"Bournemouth 68 - 60 Nott'm Forest"},
+    {"Chelsea 65 - 49 Wolves"},
+    {"Man Utd 70 - 54 West Ham"},
+    {"Arsenal 69 - 66 Liverpool"},
+    {"Brentford 49 - 64 Man City"}
   ]
 end

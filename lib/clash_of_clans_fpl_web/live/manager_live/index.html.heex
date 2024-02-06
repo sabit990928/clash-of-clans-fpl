@@ -1,0 +1,46 @@
+<.header>
+  Listing Managers
+  <:actions>
+    <.link patch={~p"/managers/new"}>
+      <.button>New Manager</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="managers"
+  rows={@streams.managers}
+  row_click={fn {_id, manager} -> JS.navigate(~p"/managers/#{manager}") end}
+>
+  <:col :let={{_id, manager}} label="Gameweek"><%= manager.gameweek %></:col>
+  <:col :let={{_id, manager}} label="Team name"><%= manager.team_name %></:col>
+  <:col :let={{_id, manager}} label="Name"><%= manager.name %></:col>
+  <:col :let={{_id, manager}} label="League"><%= manager.league_id %></:col>
+  <:col :let={{_id, manager}} label="Team"><%= manager.team_id %></:col>
+  <:col :let={{_id, manager}} label="League name"><%= manager.league_name %></:col>
+  <:action :let={{_id, manager}}>
+    <div class="sr-only">
+      <.link navigate={~p"/managers/#{manager}"}>Show</.link>
+    </div>
+    <.link patch={~p"/managers/#{manager}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, manager}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: manager.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal :if={@live_action in [:new, :edit]} id="manager-modal" show on_cancel={JS.patch(~p"/managers")}>
+  <.live_component
+    module={ClashOfClansFplWeb.ManagerLive.FormComponent}
+    id={@manager.id || :new}
+    title={@page_title}
+    action={@live_action}
+    manager={@manager}
+    patch={~p"/managers"}
+  />
+</.modal>

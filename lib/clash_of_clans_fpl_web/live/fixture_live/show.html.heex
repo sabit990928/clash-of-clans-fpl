@@ -1,0 +1,34 @@
+<.header>
+  Fixture <%= @fixture.id %>
+  <:subtitle>This is a fixture record from your database.</:subtitle>
+  <:actions>
+    <.link patch={~p"/fixtures/#{@fixture}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit fixture</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Team home"><%= @fixture.team_home_id %></:item>
+  <:item title="Team home score"><%= @fixture.team_home_score %></:item>
+  <:item title="Team home name"><%= @fixture.team_home_name %></:item>
+  <:item title="Team away"><%= @fixture.team_away_id %></:item>
+  <:item title="Team away score"><%= @fixture.team_away_score %></:item>
+  <:item title="Team away name"><%= @fixture.team_away_name %></:item>
+  <:item title="Gameweek"><%= @fixture.gameweek %></:item>
+  <:item title="Team h manager count"><%= @fixture.team_h_manager_count %></:item>
+  <:item title="Team a manager count"><%= @fixture.team_a_manager_count %></:item>
+</.list>
+
+<.back navigate={~p"/fixtures"}>Back to fixtures</.back>
+
+<.modal :if={@live_action == :edit} id="fixture-modal" show on_cancel={JS.patch(~p"/fixtures/#{@fixture}")}>
+  <.live_component
+    module={ClashOfClansFplWeb.FixtureLive.FormComponent}
+    id={@fixture.id}
+    title={@page_title}
+    action={@live_action}
+    fixture={@fixture}
+    patch={~p"/fixtures/#{@fixture}"}
+  />
+</.modal>

@@ -1,0 +1,49 @@
+<.header>
+  Listing Fixtures
+  <:actions>
+    <.link patch={~p"/fixtures/new"}>
+      <.button>New Fixture</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="fixtures"
+  rows={@streams.fixtures}
+  row_click={fn {_id, fixture} -> JS.navigate(~p"/fixtures/#{fixture}") end}
+>
+  <:col :let={{_id, fixture}} label="Team home"><%= fixture.team_home_id %></:col>
+  <:col :let={{_id, fixture}} label="Team home score"><%= fixture.team_home_score %></:col>
+  <:col :let={{_id, fixture}} label="Team home name"><%= fixture.team_home_name %></:col>
+  <:col :let={{_id, fixture}} label="Team away"><%= fixture.team_away_id %></:col>
+  <:col :let={{_id, fixture}} label="Team away score"><%= fixture.team_away_score %></:col>
+  <:col :let={{_id, fixture}} label="Team away name"><%= fixture.team_away_name %></:col>
+  <:col :let={{_id, fixture}} label="Gameweek"><%= fixture.gameweek %></:col>
+  <:col :let={{_id, fixture}} label="Team h manager count"><%= fixture.team_h_manager_count %></:col>
+  <:col :let={{_id, fixture}} label="Team a manager count"><%= fixture.team_a_manager_count %></:col>
+  <:action :let={{_id, fixture}}>
+    <div class="sr-only">
+      <.link navigate={~p"/fixtures/#{fixture}"}>Show</.link>
+    </div>
+    <.link patch={~p"/fixtures/#{fixture}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, fixture}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: fixture.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal :if={@live_action in [:new, :edit]} id="fixture-modal" show on_cancel={JS.patch(~p"/fixtures")}>
+  <.live_component
+    module={ClashOfClansFplWeb.FixtureLive.FormComponent}
+    id={@fixture.id || :new}
+    title={@page_title}
+    action={@live_action}
+    fixture={@fixture}
+    patch={~p"/fixtures"}
+  />
+</.modal>

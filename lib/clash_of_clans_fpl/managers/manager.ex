@@ -10,6 +10,8 @@ defmodule ClashOfClansFpl.Managers.Manager do
     field :team_id, :integer
     field :league_name, :string
     field :mvp?, :boolean, default: false
+    field :gw_points, :integer
+    field :gw_rank, :integer
 
     timestamps(type: :utc_datetime)
   end
@@ -17,7 +19,17 @@ defmodule ClashOfClansFpl.Managers.Manager do
   @doc false
   def changeset(manager, attrs) do
     manager
-    |> cast(attrs, [:gameweek, :team_name, :name, :league_id, :team_id, :league_name, :mvp?])
+    |> cast(attrs, [
+      :gameweek,
+      :team_name,
+      :name,
+      :league_id,
+      :team_id,
+      :league_name,
+      :mvp?,
+      :gw_points,
+      :gw_rank
+    ])
     |> validate_required([:gameweek, :team_name, :name, :league_id, :team_id, :league_name])
   end
 end

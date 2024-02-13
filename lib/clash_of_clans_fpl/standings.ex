@@ -331,26 +331,27 @@ defmodule ClashOfClansFpl.Standings do
 
     sorted_managers =
       Enum.map(managers_current_gw, fn {name, current_gameweek} ->
-        {name, current_gameweek["points"] - current_gameweek["event_transfers_cost"]}
+        {name, current_gameweek["points"] - current_gameweek["event_transfers_cost"],
+         current_gameweek["overall_rank"]}
       end)
-      |> Enum.sort_by(fn {_id, pure_points} -> pure_points end, :desc)
+      |> Enum.sort_by(fn {_id, pure_points, _OR} -> pure_points end, :desc)
 
-    {_id, max_points} =
+    {_id, max_points, _OR} =
       sorted_managers
       |> hd()
 
     all_mvp_managers =
-      Enum.filter(sorted_managers, fn {_id, points} -> points == max_points end)
+      Enum.filter(sorted_managers, fn {_id, points, _OR} -> points == max_points end)
 
     # maybe refactor that logic
-    Enum.each(all_mvp_managers, fn {fpl_id, _points} ->
+    Enum.each(all_mvp_managers, fn {fpl_id, points, overall_rank} ->
       alias ClashOfClansFpl.Managers
 
       manager =
         from(m in Managers.Manager, where: m.team_id == ^fpl_id and m.gameweek == ^gameweek)
         |> Repo.one()
 
-      Managers.update_manager(manager, %{mvp?: true})
+      Managers.update_manager(manager, %{mvp?: true, gw_points: points, gw_rank: overall_rank})
     end)
 
     sum =
@@ -475,14 +476,16 @@ defmodule ClashOfClansFpl.Standings do
             points: team_1.points + 3,
             avg_score: team_1.avg_score + team_1_avg,
             fpl_points: team_1.fpl_points + team_1_avg,
-            manager_count: team_1_managers
+            manager_count: team_1_managers,
+            new_manager_count: team_1_managers - team_1.manager_count
           })
 
           update_team(team_2, %{
             lose: team_2.lose + 1,
             avg_score: team_2.avg_score + team_2_avg,
             fpl_points: team_2.fpl_points + team_2_avg,
-            manager_count: team_2_managers
+            manager_count: team_2_managers,
+            new_manager_count: team_2_managers - team_2.manager_count
           })
 
         team_1_avg < team_2_avg ->
@@ -491,14 +494,16 @@ defmodule ClashOfClansFpl.Standings do
             points: team_2.points + 3,
             avg_score: team_2.avg_score + team_2_avg,
             fpl_points: team_2.fpl_points + team_2_avg,
-            manager_count: team_2_managers
+            manager_count: team_2_managers,
+            new_manager_count: team_2_managers - team_2.manager_count
           })
 
           update_team(team_1, %{
             lose: team_1.lose + 1,
             avg_score: team_1.avg_score + team_1_avg,
             fpl_points: team_1.fpl_points + team_1_avg,
-            manager_count: team_1_managers
+            manager_count: team_1_managers,
+            new_manager_count: team_1_managers - team_1.manager_count
           })
 
         # Draw
@@ -508,7 +513,8 @@ defmodule ClashOfClansFpl.Standings do
             points: team_1.points + 1,
             avg_score: team_1.avg_score + team_1_avg,
             fpl_points: team_1.fpl_points + team_1_avg,
-            manager_count: team_1_managers
+            manager_count: team_1_managers,
+            new_manager_count: team_1_managers - team_1.manager_count
           })
 
           update_team(team_2, %{
@@ -516,7 +522,8 @@ defmodule ClashOfClansFpl.Standings do
             points: team_2.points + 1,
             avg_score: team_2.avg_score + team_2_avg,
             fpl_points: team_2.fpl_points + team_2_avg,
-            manager_count: team_2_managers
+            manager_count: team_2_managers,
+            new_manager_count: team_2_managers - team_2.manager_count
           })
       end
 
@@ -751,6 +758,33 @@ defmodule ClashOfClansFpl.Standings do
 
     File.write(file_path, csv)
   end
+
+  def update_positions do
+    teams = list_teams() |> Enum.with_index(fn team, index -> {team, index + 1} end)
+
+    Enum.each(teams, fn {team, new_position} ->
+      update_team(team, %{
+        last_position: team.current_position,
+        current_position: new_position
+      })
+    end)
+  end
+
+  # def update_manager_count do
+  #   teams = list_teams()
+
+  # # Hardcoded gameweek value here
+  #   Enum.each(teams, fn team ->
+  #     query =
+  #       from m in ClashOfClansFpl.Managers.Manager,
+  #         where: m.gameweek == 22 and m.league_id == ^team.fpl_league_id,
+  #         select: count()
+
+  #     prev_22_count = Repo.one(query)
+
+  #     update_team(team, %{new_manager_count: team.manager_count - prev_22_count})
+  #   end)
+  # end
 end
 
 # Standings.list_duplicate_managers()

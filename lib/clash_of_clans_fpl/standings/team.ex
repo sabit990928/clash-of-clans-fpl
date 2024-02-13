@@ -6,6 +6,7 @@ defmodule ClashOfClansFpl.Standings.Team do
     field :name, :string
     field :points, :integer, default: 0
     field :manager_count, :integer
+    field :new_manager_count, :integer, default: 0
     field :win, :integer, default: 0
     field :draw, :integer, default: 0
     field :lose, :integer, default: 0
@@ -26,6 +27,7 @@ defmodule ClashOfClansFpl.Standings.Team do
       :name,
       :points,
       :manager_count,
+      :new_manager_count,
       :win,
       :draw,
       :lose,

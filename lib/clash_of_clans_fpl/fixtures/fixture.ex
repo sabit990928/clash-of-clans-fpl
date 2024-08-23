@@ -18,6 +18,8 @@ defmodule ClashOfClansFpl.Fixtures.Fixture do
     field :team_a_avg_hits, :float
     field :team_h_score, :integer
     field :team_a_score, :integer
+    field :season, :string, default: "24/25"
+
 
     timestamps(type: :utc_datetime)
   end
@@ -40,7 +42,8 @@ defmodule ClashOfClansFpl.Fixtures.Fixture do
       :team_h_avg_hits,
       :team_a_avg_hits,
       :team_h_score,
-      :team_a_score
+      :team_a_score,
+      :season
     ])
     |> validate_required([
       :team_home_id,
@@ -51,7 +54,8 @@ defmodule ClashOfClansFpl.Fixtures.Fixture do
       :team_away_name,
       :gameweek,
       :team_h_manager_count,
-      :team_a_manager_count
+      :team_a_manager_count,
+      :season
     ])
   end
 end

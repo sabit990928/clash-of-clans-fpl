@@ -16,6 +16,8 @@ defmodule ClashOfClansFpl.Standings.Team do
     field :fpl_league_id, :integer
     field :last_position, :integer
     field :current_position, :integer
+    field :gw_points, :integer
+    field :season, :string, default: "24/25"
 
     timestamps(type: :utc_datetime)
   end
@@ -36,7 +38,9 @@ defmodule ClashOfClansFpl.Standings.Team do
       :fpl_id,
       :fpl_league_id,
       :last_position,
-      :current_position
+      :current_position,
+      :gw_points,
+      :season
     ])
     |> validate_required([
       :name,
@@ -45,7 +49,8 @@ defmodule ClashOfClansFpl.Standings.Team do
       :draw,
       :lose,
       :fpl_id,
-      :fpl_league_id
+      :fpl_league_id,
+      :season
     ])
   end
 end

@@ -35,3 +35,4 @@ clash_of_clans_fpl-*.tar
 npm-debug.log
 /assets/node_modules/
 
+.DS_Store

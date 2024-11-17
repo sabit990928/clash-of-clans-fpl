@@ -4,8 +4,9 @@ defmodule ClashOfClansFpl.Standings do
   """
 
   import Ecto.Query, warn: false
-  alias ClashOfClansFpl.Repo
 
+  alias ClashOfClansFpl.Fixtures
+  alias ClashOfClansFpl.Repo
   alias ClashOfClansFpl.Standings.Team
 
   @doc """
@@ -19,7 +20,10 @@ defmodule ClashOfClansFpl.Standings do
   """
   def list_teams(season \\ "24/25") do
     Repo.all(
-      from(t in Team, where: t.season == ^season, order_by: [desc: t.points, desc: t.fpl_points])
+      from(t in Team,
+        where: t.season == ^season,
+        order_by: [desc: t.points, desc: t.fpl_points, asc: t.manager_count]
+      )
     )
   end
 
@@ -239,6 +243,7 @@ defmodule ClashOfClansFpl.Standings do
     leagues_list = list_teams("24/25") |> Enum.map(& &1.fpl_league_id)
 
     duplicate_manager_ids = duplicate_managers_ids()
+    # Maybe add filter for manually blocked managers
 
     for league_id <- leagues_list do
       page = 1
@@ -278,10 +283,14 @@ defmodule ClashOfClansFpl.Standings do
 
     # Get duplicated ones and blocked/blacklist managers.
     # Maybe need to create separate function for blacklist managers.
-    duplicate_manager_ids = duplicate_managers_ids()
-    # It's for the manual blacklist in the season 23/24.
-    # Maybe put down his name or update his ID for season 24/25.
-    # |> List.insert_at(-1, "899986")
+    duplicate_manager_ids =
+      duplicate_managers_ids()
+      # It's for the manual blacklist in the season 23/24.
+      # Maybe put down his name or update his ID for season 24/25.
+      |> List.insert_at(-1, "1430773")
+
+    # That blocked ID is 4526480 in 24/25 season. Murad Farzaliyev
+
     gameweek_average = get_average_gameweek_point(gameweek)
 
     for league_id <- leagues_list do
@@ -335,26 +344,33 @@ defmodule ClashOfClansFpl.Standings do
     sorted_managers =
       Enum.map(managers_current_gw, fn {name, current_gameweek} ->
         {name, current_gameweek["points"] - current_gameweek["event_transfers_cost"],
-         current_gameweek["rank"]}
+         current_gameweek["rank"], current_gameweek["overall_rank"]}
       end)
-      |> Enum.sort_by(fn {_id, pure_points, _GWR} -> pure_points end, :desc)
+      |> Enum.sort_by(fn {_id, pure_points, _GWR, _OR} -> pure_points end, :desc)
 
-    {_id, max_points, _OR} =
+    # Get the highest point in the league
+    {_id, max_points, _GWR, _OR} =
       sorted_managers
       |> hd()
 
+    # Get all managers with the highest points
     all_mvp_managers =
-      Enum.filter(sorted_managers, fn {_id, points, _GWR} -> points == max_points end)
+      Enum.filter(sorted_managers, fn {_id, points, _GWR, _OR} -> points == max_points end)
 
     # maybe refactor that logic
-    Enum.each(all_mvp_managers, fn {fpl_id, points, gameweek_rank} ->
+    Enum.each(all_mvp_managers, fn {fpl_id, points, gameweek_rank, overall_rank} ->
       alias ClashOfClansFpl.Managers
 
       manager =
         from(m in Managers.Manager, where: m.team_id == ^fpl_id and m.gameweek == ^gameweek)
         |> Repo.one()
 
-      Managers.update_manager(manager, %{mvp?: true, gw_points: points, gw_rank: gameweek_rank})
+      Managers.update_manager(manager, %{
+        mvp?: true,
+        gw_points: points,
+        gw_rank: gameweek_rank,
+        overall_rank: overall_rank
+      })
     end)
 
     sum =
@@ -461,7 +477,8 @@ defmodule ClashOfClansFpl.Standings do
             avg_score: team_1.avg_score + team_1_avg,
             fpl_points: team_1.fpl_points + team_1_avg,
             manager_count: team_1_managers,
-            new_manager_count: team_1_managers - team_1.manager_count
+            new_manager_count: team_1_managers - team_1.manager_count,
+            gw_points: team_1_avg
           })
 
           update_team(team_2, %{
@@ -469,7 +486,8 @@ defmodule ClashOfClansFpl.Standings do
             avg_score: team_2.avg_score + team_2_avg,
             fpl_points: team_2.fpl_points + team_2_avg,
             manager_count: team_2_managers,
-            new_manager_count: team_2_managers - team_2.manager_count
+            new_manager_count: team_2_managers - team_2.manager_count,
+            gw_points: team_2_avg
           })
 
         team_1_avg < team_2_avg ->
@@ -479,7 +497,8 @@ defmodule ClashOfClansFpl.Standings do
             avg_score: team_2.avg_score + team_2_avg,
             fpl_points: team_2.fpl_points + team_2_avg,
             manager_count: team_2_managers,
-            new_manager_count: team_2_managers - team_2.manager_count
+            new_manager_count: team_2_managers - team_2.manager_count,
+            gw_points: team_2_avg
           })
 
           update_team(team_1, %{
@@ -487,7 +506,8 @@ defmodule ClashOfClansFpl.Standings do
             avg_score: team_1.avg_score + team_1_avg,
             fpl_points: team_1.fpl_points + team_1_avg,
             manager_count: team_1_managers,
-            new_manager_count: team_1_managers - team_1.manager_count
+            new_manager_count: team_1_managers - team_1.manager_count,
+            gw_points: team_1_avg
           })
 
         # Draw
@@ -498,7 +518,8 @@ defmodule ClashOfClansFpl.Standings do
             avg_score: team_1.avg_score + team_1_avg,
             fpl_points: team_1.fpl_points + team_1_avg,
             manager_count: team_1_managers,
-            new_manager_count: team_1_managers - team_1.manager_count
+            new_manager_count: team_1_managers - team_1.manager_count,
+            gw_points: team_1_avg
           })
 
           update_team(team_2, %{
@@ -507,7 +528,8 @@ defmodule ClashOfClansFpl.Standings do
             avg_score: team_2.avg_score + team_2_avg,
             fpl_points: team_2.fpl_points + team_2_avg,
             manager_count: team_2_managers,
-            new_manager_count: team_2_managers - team_2.manager_count
+            new_manager_count: team_2_managers - team_2.manager_count,
+            gw_points: team_2_avg
           })
       end
 
@@ -519,7 +541,7 @@ defmodule ClashOfClansFpl.Standings do
   Step 3.
   Save fixtures, how teams played against each other.
   """
-  def just_play_games(gameweek) do
+  def save_gameweek_fixtures(gameweek) do
     average_league_points = calculate_all_average_league_points(gameweek)
 
     link = "https://fantasy.premierleague.com/api/fixtures/?event=#{gameweek}"
@@ -544,10 +566,6 @@ defmodule ClashOfClansFpl.Standings do
           team_2.fpl_league_id == fpl_league_id
         end)
 
-      # maybe save result to db
-
-      alias ClashOfClansFpl.Fixtures
-
       Fixtures.create_fixture(%{
         team_home_id: team_h_id,
         team_home_score: team_1_avg,
@@ -568,8 +586,71 @@ defmodule ClashOfClansFpl.Standings do
         season: "24/25"
       })
 
-      update_team(team_1, %{gw_points: team_1_avg})
-      update_team(team_2, %{gw_points: team_2_avg})
+      ##########################################
+      # Update table status
+      cond do
+        team_1_avg > team_2_avg ->
+          update_team(team_1, %{
+            win: team_1.win + 1,
+            points: team_1.points + 3,
+            avg_score: team_1.avg_score + team_1_avg,
+            fpl_points: team_1.fpl_points + team_1_avg,
+            manager_count: team_1_managers,
+            new_manager_count: team_1_managers - team_1.manager_count,
+            gw_points: team_1_avg
+          })
+
+          update_team(team_2, %{
+            lose: team_2.lose + 1,
+            avg_score: team_2.avg_score + team_2_avg,
+            fpl_points: team_2.fpl_points + team_2_avg,
+            manager_count: team_2_managers,
+            new_manager_count: team_2_managers - team_2.manager_count,
+            gw_points: team_2_avg
+          })
+
+        team_1_avg < team_2_avg ->
+          update_team(team_2, %{
+            win: team_2.win + 1,
+            points: team_2.points + 3,
+            avg_score: team_2.avg_score + team_2_avg,
+            fpl_points: team_2.fpl_points + team_2_avg,
+            manager_count: team_2_managers,
+            new_manager_count: team_2_managers - team_2.manager_count,
+            gw_points: team_2_avg
+          })
+
+          update_team(team_1, %{
+            lose: team_1.lose + 1,
+            avg_score: team_1.avg_score + team_1_avg,
+            fpl_points: team_1.fpl_points + team_1_avg,
+            manager_count: team_1_managers,
+            new_manager_count: team_1_managers - team_1.manager_count,
+            gw_points: team_1_avg
+          })
+
+        # Draw
+        team_1_avg == team_2_avg ->
+          update_team(team_1, %{
+            draw: team_1.draw + 1,
+            points: team_1.points + 1,
+            avg_score: team_1.avg_score + team_1_avg,
+            fpl_points: team_1.fpl_points + team_1_avg,
+            manager_count: team_1_managers,
+            new_manager_count: team_1_managers - team_1.manager_count,
+            gw_points: team_1_avg
+          })
+
+          update_team(team_2, %{
+            draw: team_2.draw + 1,
+            points: team_2.points + 1,
+            avg_score: team_2.avg_score + team_2_avg,
+            fpl_points: team_2.fpl_points + team_2_avg,
+            manager_count: team_2_managers,
+            new_manager_count: team_2_managers - team_2.manager_count,
+            gw_points: team_2_avg
+          })
+      end
 
       {"#{team_1.name} #{team_1_avg} - #{team_2_avg} #{team_2.name}"}
     end
@@ -900,7 +981,100 @@ defmodule ClashOfClansFpl.Standings do
   #     update_team(team, %{new_manager_count: team.manager_count - prev_22_count})
   #   end)
   # end
+
+  def calculate_median_points(gameweek) do
+    teams = list_teams()
+
+    duplicate_manager_ids =
+      duplicate_managers_ids()
+      # Maybe filter
+      |> List.insert_at(-1, "1430773")
+
+    median_league_points =
+      Enum.map(teams, fn team ->
+        page = 1
+        league_id = team.fpl_league_id
+
+        league_link =
+          "https://fantasy.premierleague.com/api/leagues-classic/#{league_id}/standings/?page_standings=#{page}"
+
+        body = poison_request(league_link)
+
+        has_next_page? = body["standings"]["has_next"]
+
+        all_managers =
+          get_all_managers(league_id, page + 1, body["standings"]["results"], has_next_page?)
+          |> Enum.filter(fn manager -> manager["entry"] not in duplicate_manager_ids end)
+
+        managers_current_gw =
+          Enum.map(all_managers, fn manager_data ->
+            entry = manager_data["entry"]
+
+            history_body =
+              poison_request("https://fantasy.premierleague.com/api/entry/#{entry}/history/")
+
+            gameweeks = history_body["current"]
+            {manager_data["entry"], Enum.find(gameweeks, fn gw -> gw["event"] == gameweek end)}
+          end)
+
+        sorted_managers =
+          Enum.map(managers_current_gw, fn {name, current_gameweek} ->
+            {name, current_gameweek["points"] - current_gameweek["event_transfers_cost"],
+             current_gameweek["rank"], current_gameweek["overall_rank"]}
+          end)
+          |> Enum.sort_by(fn {_id, pure_points, _GWR, _OR} -> pure_points end, :desc)
+
+        %{
+          median_points:
+            Median.calculate_median(Enum.map(sorted_managers, fn {_, points, _, _} -> points end)),
+          fpl_league_id: team.fpl_league_id
+        }
+      end)
+
+    link = "https://fantasy.premierleague.com/api/fixtures/?event=#{gameweek}"
+
+    fixtures = poison_request(link)
+
+    # team_h, team_a
+    for fixture <- fixtures do
+      team_h_id = fixture["team_h"]
+      team_a_id = fixture["team_a"]
+
+      team_1 = get_team_by_fpl_id(team_h_id)
+      team_2 = get_team_by_fpl_id(team_a_id)
+
+      %{median_points: team_1_median} =
+        Enum.find(median_league_points, fn item ->
+          team_1.fpl_league_id == item.fpl_league_id
+        end)
+
+      %{median_points: team_2_median} =
+        Enum.find(median_league_points, fn item ->
+          team_2.fpl_league_id == item.fpl_league_id
+        end)
+
+      {"#{team_1.name} #{team_1_median} - #{team_2_median} #{team_2.name}"}
+    end
+  end
 end
 
 # Standings.list_duplicate_managers()
 # Standings.play_games(gameweek)
+
+defmodule Median do
+  def calculate_median(list) do
+    sorted_list = Enum.sort(list)
+    len = length(sorted_list)
+
+    middle = div(len, 2)
+
+    if rem(len, 2) == 0 do
+      # If even number of elements, average the two middle values
+      ((Enum.at(sorted_list, middle - 1) + Enum.at(sorted_list, middle)) / 2)
+      |> round()
+    else
+      # If odd number of elements, return the middle value
+      Enum.at(sorted_list, middle)
+    end
+  end
+end

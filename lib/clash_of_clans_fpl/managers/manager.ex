@@ -12,6 +12,7 @@ defmodule ClashOfClansFpl.Managers.Manager do
     field :mvp?, :boolean, default: false
     field :gw_points, :integer
     field :gw_rank, :integer
+    field :overall_rank, :integer
     field :season, :string, default: "24/25"
 
     timestamps(type: :utc_datetime)
@@ -30,8 +31,17 @@ defmodule ClashOfClansFpl.Managers.Manager do
       :mvp?,
       :gw_points,
       :gw_rank,
+      :overall_rank,
       :season
     ])
-    |> validate_required([:gameweek, :team_name, :name, :league_id, :team_id, :league_name, :season])
+    |> validate_required([
+      :gameweek,
+      :team_name,
+      :name,
+      :league_id,
+      :team_id,
+      :league_name,
+      :season
+    ])
   end
 end

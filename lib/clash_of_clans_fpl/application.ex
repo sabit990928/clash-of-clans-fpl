@@ -10,14 +10,16 @@ defmodule ClashOfClansFpl.Application do
     children = [
       ClashOfClansFplWeb.Telemetry,
       ClashOfClansFpl.Repo,
-      {DNSCluster, query: Application.get_env(:clash_of_clans_fpl, :dns_cluster_query) || :ignore},
+      {DNSCluster,
+       query: Application.get_env(:clash_of_clans_fpl, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: ClashOfClansFpl.PubSub},
       # Start the Finch HTTP client for sending emails
       {Finch, name: ClashOfClansFpl.Finch},
       # Start a worker by calling: ClashOfClansFpl.Worker.start_link(arg)
       # {ClashOfClansFpl.Worker, arg},
       # Start to serve requests, typically the last entry
-      ClashOfClansFplWeb.Endpoint
+      ClashOfClansFplWeb.Endpoint,
+      ClashOfClansFpl.Scheduler
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

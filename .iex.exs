@@ -1,0 +1,3 @@
+alias ClashOfClansFpl.SecondHalf
+alias ClashOfClansFpl.Standings
+alias ClashOfClansFpl.Repo

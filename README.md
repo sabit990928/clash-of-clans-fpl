@@ -1,18 +1,43 @@
 # ClashOfClansFpl
 
-To start your Phoenix server:
+```elixir
+# import ClashOfClansFpl.Standings
+# alias  ClashOfClansFpl.Standings
 
-  * Run `mix setup` to install and setup dependencies
-  * Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
+# 1:
+# Standings.list_duplicate_managers
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+# 2:
+# Standings.save_gameweek_league_managers 1
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+# 3:
+# Standings.save_gameweek_fixtures 1
 
-## Learn more
+# 4:
+# Standings.update_positions
 
-  * Official website: https://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Forum: https://elixirforum.com/c/phoenix-forum
-  * Source: https://github.com/phoenixframework/phoenix
+# 5. Another optional:
+# Standings.calculate_median_points 1
+
+# ClashOfClansFpl.ClashCSV.generate_csv_with_headers 1
+
+# -----
+# New local
+
+# alias  ClashOfClansFpl.Standings
+# alias ClashOfClansFpl.SecondHalf
+
+# 2:
+# SecondHalf.copy_gw_managers_from_previous 38
+
+# 3:
+# SecondHalf.local_save_gameweek_fixtures 38
+
+# 4:
+# Standings.update_positions
+
+# ClashOfClansFpl.ClashCSV.generate_csv_with_headers 38
+
+# 5. Another optional:
+# Standings.calculate_median_points 25
+```

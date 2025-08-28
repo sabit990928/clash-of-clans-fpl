@@ -18,8 +18,7 @@ defmodule ClashOfClansFpl.Fixtures.Fixture do
     field :team_a_avg_hits, :float
     field :team_h_score, :integer
     field :team_a_score, :integer
-    field :season, :string, default: "24/25"
-
+    field :season, :string, default: "25/26"
 
     timestamps(type: :utc_datetime)
   end
@@ -47,15 +46,55 @@ defmodule ClashOfClansFpl.Fixtures.Fixture do
     ])
     |> validate_required([
       :team_home_id,
-      :team_home_score,
+      # :team_home_score,
       :team_home_name,
       :team_away_id,
-      :team_away_score,
+      # :team_away_score,
       :team_away_name,
       :gameweek,
-      :team_h_manager_count,
-      :team_a_manager_count,
+      # :team_h_manager_count,
+      # :team_a_manager_count,
       :season
     ])
   end
 end
+
+# import ClashOfClansFpl.Standings
+# alias  ClashOfClansFpl.Standings
+
+# 1:
+# Standings.list_duplicate_managers
+
+# 2:
+# Standings.save_gameweek_league_managers 1
+
+# 3:
+# Standings.save_gameweek_fixtures 1
+
+# 4:
+# Standings.update_positions
+
+# 5. Another optional:
+# Standings.calculate_median_points 1
+
+# ClashOfClansFpl.ClashCSV.generate_csv_with_headers 1
+
+# -----
+# New local
+
+# alias  ClashOfClansFpl.Standings
+# alias ClashOfClansFpl.SecondHalf
+
+# 2:
+# SecondHalf.copy_gw_managers_from_previous 38
+
+# 3:
+# SecondHalf.local_save_gameweek_fixtures 38
+
+# 4:
+# Standings.update_positions
+
+# ClashOfClansFpl.ClashCSV.generate_csv_with_headers 38
+
+# 5. Another optional:
+# Standings.calculate_median_points 25

@@ -13,7 +13,7 @@ defmodule ClashOfClansFpl.Managers.Manager do
     field :gw_points, :integer
     field :gw_rank, :integer
     field :overall_rank, :integer
-    field :season, :string, default: "24/25"
+    field :season, :string, default: "25/26"
 
     timestamps(type: :utc_datetime)
   end

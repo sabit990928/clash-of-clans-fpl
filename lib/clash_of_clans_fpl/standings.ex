@@ -18,7 +18,7 @@ defmodule ClashOfClansFpl.Standings do
       [%Team{}, ...]
 
   """
-  def list_teams(season \\ "24/25") do
+  def list_teams(season \\ "25/26") do
     Repo.all(
       from(t in Team,
         where: t.season == ^season,
@@ -46,7 +46,7 @@ defmodule ClashOfClansFpl.Standings do
   @doc """
 
   """
-  def get_team_by_fpl_id(fpl_id, season \\ "24/25"),
+  def get_team_by_fpl_id(fpl_id, season \\ "25/26"),
     do: Repo.get_by!(Team, fpl_id: fpl_id, season: season)
 
   @doc """
@@ -240,7 +240,7 @@ defmodule ClashOfClansFpl.Standings do
   @spec save_gameweek_league_managers(integer()) :: atom()
   def save_gameweek_league_managers(gameweek) do
     # Manually update every new season
-    leagues_list = list_teams("24/25") |> Enum.map(& &1.fpl_league_id)
+    leagues_list = list_teams("25/26") |> Enum.map(& &1.fpl_league_id)
 
     duplicate_manager_ids = duplicate_managers_ids()
     # Maybe add filter for manually blocked managers
@@ -269,7 +269,7 @@ defmodule ClashOfClansFpl.Standings do
             team_id: manager["entry"],
             league_name: body["league"]["name"],
             # Manually update every new season
-            season: "24/25"
+            season: "25/26"
           })
         end)
 
@@ -279,15 +279,16 @@ defmodule ClashOfClansFpl.Standings do
 
   def calculate_all_average_league_points(gameweek) do
     # Manually update every new season
-    leagues_list = list_teams("24/25") |> Enum.map(& &1.fpl_league_id)
+    leagues_list = list_teams("25/26") |> Enum.map(& &1.fpl_league_id)
 
     # Get duplicated ones and blocked/blacklist managers.
     # Maybe need to create separate function for blacklist managers.
     duplicate_manager_ids =
       duplicate_managers_ids()
-      # It's for the manual blacklist in the season 23/24.
-      # Maybe put down his name or update his ID for season 24/25.
-      |> List.insert_at(-1, "1430773")
+
+    # It's for the manual blacklist in the season 23/24.
+    # Maybe put down his name or update his ID for season 24/25.
+    # |> List.insert_at(-1, "1430773")
 
     # That blocked ID is 4526480 in 24/25 season. Murad Farzaliyev
 
@@ -349,9 +350,12 @@ defmodule ClashOfClansFpl.Standings do
       |> Enum.sort_by(fn {_id, pure_points, _GWR, _OR} -> pure_points end, :desc)
 
     # Get the highest point in the league
-    {_id, max_points, _GWR, _OR} =
-      sorted_managers
-      |> hd()
+
+    max_points =
+      case sorted_managers do
+        [] -> gameweek_average
+        [{_id, points, _GWR, _OR} | _] -> points
+      end
 
     # Get all managers with the highest points
     all_mvp_managers =
@@ -547,9 +551,16 @@ defmodule ClashOfClansFpl.Standings do
     link = "https://fantasy.premierleague.com/api/fixtures/?event=#{gameweek}"
 
     fixtures = poison_request(link)
+    # TODO: Remove below hardcode example
+    # derby = [%{"team_h" => 8, "team_h_score" => 88, "team_a" => 12, "team_a_score" => 88}]
 
+    fixtures = fixtures
+    # ++ derby
     # team_h, team_a
+    # TODO: Save fixtures to the data
+    # Run through db fixtures
     for fixture <- fixtures do
+      # Match db fixture with the api fixture
       team_h_id = fixture["team_h"]
       team_a_id = fixture["team_a"]
 
@@ -583,7 +594,7 @@ defmodule ClashOfClansFpl.Standings do
         team_h_score: fixture["team_h_score"],
         team_a_score: fixture["team_a_score"],
         # Manually update every new season
-        season: "24/25"
+        season: "25/26"
       })
 
       ##########################################
@@ -687,7 +698,8 @@ defmodule ClashOfClansFpl.Standings do
       team_h_id: home_id,
       team_a_id: away_id,
       team_h_avg_hits: team_1_hits_avg,
-      team_a_avg_hits: team_2_hits_avg
+      team_a_avg_hits: team_2_hits_avg,
+      season: "25/26"
     })
 
     update_team(team_1, %{gw_points: team_1_avg})
@@ -773,69 +785,6 @@ defmodule ClashOfClansFpl.Standings do
     {"#{team_1.name} #{team_1_avg} - #{team_2_avg} #{team_2.name}"}
   end
 
-  def read_from_csv() do
-  end
-
-  # implementation with csv
-  def load(gameweek) do
-    # TODO: check whether files names are correct
-    files = [
-      "../../projects/fpl_ranker/coc_artefacts/gw_#{gameweek}_final/arsenal.csv",
-      "../../projects/fpl_ranker/coc_artefacts/gw_#{gameweek}_final/aston_villa.csv",
-      "../../projects/fpl_ranker/coc_artefacts/gw_#{gameweek}_final/bournemouth.csv",
-      "../../projects/fpl_ranker/coc_artefacts/gw_#{gameweek}_final/brentford.csv",
-      "../../projects/fpl_ranker/coc_artefacts/gw_#{gameweek}_final/brighton.csv",
-      "../../projects/fpl_ranker/coc_artefacts/gw_#{gameweek}_final/burnley.csv",
-      "../../projects/fpl_ranker/coc_artefacts/gw_#{gameweek}_final/chelsea.csv",
-      "../../projects/fpl_ranker/coc_artefacts/gw_#{gameweek}_final/crystal_palace.csv",
-      "../../projects/fpl_ranker/coc_artefacts/gw_#{gameweek}_final/everton.csv",
-      "../../projects/fpl_ranker/coc_artefacts/gw_#{gameweek}_final/fulham.csv",
-      "../../projects/fpl_ranker/coc_artefacts/gw_#{gameweek}_final/liverpool.csv",
-      "../../projects/fpl_ranker/coc_artefacts/gw_#{gameweek}_final/luton_town.csv",
-      "../../projects/fpl_ranker/coc_artefacts/gw_#{gameweek}_final/man_city.csv",
-      "../../projects/fpl_ranker/coc_artefacts/gw_#{gameweek}_final/man_united.csv",
-      "../../projects/fpl_ranker/coc_artefacts/gw_#{gameweek}_final/newcastle.csv",
-      "../../projects/fpl_ranker/coc_artefacts/gw_#{gameweek}_final/nott_m_forest.csv",
-      "../../projects/fpl_ranker/coc_artefacts/gw_#{gameweek}_final/sheffield_utd.csv",
-      "../../projects/fpl_ranker/coc_artefacts/gw_#{gameweek}_final/tottenham.csv",
-      "../../projects/fpl_ranker/coc_artefacts/gw_#{gameweek}_final/west_ham.csv",
-      "../../projects/fpl_ranker/coc_artefacts/gw_#{gameweek}_final/wolves.csv"
-    ]
-
-    # file = "../../projects/fpl_ranker/coc_artefacts/gw_16_final/arsenal.csv"
-    Enum.map(files, fn file ->
-      case File.read(file) do
-        {:ok, _body} ->
-          file
-          |> File.stream!()
-          |> CSV.decode!()
-          |> Enum.take(1000)
-          |> Enum.drop(1)
-          |> Enum.map(fn [
-                           _index,
-                           manager_id,
-                           team_name,
-                           user_name,
-                           _,
-                           _,
-                           _,
-                           _,
-                           _,
-                           _,
-                           pure_points | _
-                         ] ->
-            {manager_id, team_name, pure_points, user_name}
-          end)
-
-        {:error, _} ->
-          IO.puts("Couldn't open the file.")
-      end
-    end)
-    |> List.flatten()
-    |> Enum.frequencies()
-    |> Map.filter(fn {_manager_data, frequency} -> frequency > 1 end)
-  end
-
   def list_all_unique_managers do
     teams = list_teams()
 
@@ -876,6 +825,7 @@ defmodule ClashOfClansFpl.Standings do
       }
     end)
     |> IO.inspect(label: "managers", limit: :infinity)
+    |> length()
   end
 
   @doc """
@@ -884,7 +834,7 @@ defmodule ClashOfClansFpl.Standings do
   """
   def list_duplicate_managers do
     # Manual season pass
-    teams = list_teams("24/25")
+    teams = list_teams("25/26")
 
     Enum.map(teams, fn team ->
       page = 1

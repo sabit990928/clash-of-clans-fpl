@@ -5,19 +5,19 @@ defmodule ClashOfClansFpl.Standings.Team do
   schema "teams" do
     field :name, :string
     field :points, :integer, default: 0
-    field :manager_count, :integer
+    field :manager_count, :integer, default: 0
     field :new_manager_count, :integer, default: 0
     field :win, :integer, default: 0
     field :draw, :integer, default: 0
     field :lose, :integer, default: 0
-    field :avg_score, :float
-    field :fpl_points, :integer
+    field :avg_score, :float, default: 0.0
+    field :fpl_points, :integer, default: 0
     field :fpl_id, :integer
     field :fpl_league_id, :integer
     field :last_position, :integer
     field :current_position, :integer
     field :gw_points, :integer
-    field :season, :string, default: "24/25"
+    field :season, :string, default: "25/26"
 
     timestamps(type: :utc_datetime)
   end

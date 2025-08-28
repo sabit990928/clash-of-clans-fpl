@@ -35,7 +35,7 @@ defmodule ClashOfClansFpl.ClashCSV do
 
     teams_query =
       from(t in Team,
-        where: t.season == "24/25",
+        where: t.season == "25/26",
         order_by: [asc: t.current_position],
         select: %{
           last_position: t.last_position,
@@ -94,7 +94,7 @@ defmodule ClashOfClansFpl.ClashCSV do
 
     fixtures_query =
       from(f in Fixture,
-        where: f.season == "24/25" and f.gameweek == ^gameweek,
+        where: f.season == "25/26" and f.gameweek == ^gameweek,
         select: %{
           home_team: f.team_home_name,
           home_PL_goals: f.team_h_score,
@@ -139,7 +139,7 @@ defmodule ClashOfClansFpl.ClashCSV do
           from t in Team,
             join: m in Manager,
             on: t.fpl_league_id == m.league_id,
-            where: m.season == "24/25" and m.gameweek == ^gameweek and m.mvp? == true,
+            where: m.season == "25/26" and m.gameweek == ^gameweek and m.mvp? == true,
             order_by: [desc: m.gw_points, asc: m.gw_rank, asc: m.overall_rank],
             select: %{
               name: t.name,

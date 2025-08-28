@@ -3,6 +3,27 @@ defmodule ClashOfClansFpl.Fixtures.FixtureResults do
   Season 2024/2025.
   """
 
+  ################################################
+  # Season 2025/2026 data
+  ################################################
+
+  # GW 1 average
+  [
+    {"Liverpool 57 - 57 Bournemouth"},
+    {"Aston Villa 52 - 65 Newcastle"},
+    {"Brighton 60 - 59 Fulham"},
+    {"Tottenham 59 - 68 Burnley"},
+    {"Sunderland 54 - 51 West Ham"},
+    {"Wolverhampton 64 - 65 Man City"},
+    {"Chelsea 53 - 54 Crystal Palace"},
+    {"Nottingham Forest 60 - 61 Brentford"},
+    {"Man Utd 52 - 56 Arsenal"},
+    {"Leeds 50 - 59 Everton"}
+  ]
+
+  ################################################
+  # Season 2024/2025 data
+  ################################################
   # GW 1
   [
     {"Man Utd 65 - 75 Fulham"},
@@ -286,11 +307,11 @@ defmodule ClashOfClansFpl.Fixtures.FixtureResults do
 
   # GW 11 duplicates
   %{
-    %{fpl_id: 114067, p_name: "FPL HQ", t_name: "Clash Of Clans admin"} => 20,
-    %{fpl_id: 834468, p_name: "hedgehogs & berries", t_name: "hhberries"} => 2,
-    %{fpl_id: 3060242, p_name: "Ruslan Shakiryanov", t_name: "Frequency 102"} => 3
+    %{fpl_id: 114_067, p_name: "FPL HQ", t_name: "Clash Of Clans admin"} => 20,
+    %{fpl_id: 834_468, p_name: "hedgehogs & berries", t_name: "hhberries"} => 2,
+    %{fpl_id: 3_060_242, p_name: "Ruslan Shakiryanov", t_name: "Frequency 102"} => 3
   }
-  
+
   # GW 11 - Average
   [
     {"Brentford 57 - 56 Bournemouth"},
@@ -304,7 +325,7 @@ defmodule ClashOfClansFpl.Fixtures.FixtureResults do
     {"Spurs 48 - 58 Ipswich"},
     {"Chelsea 55 - 56 Arsenal"}
   ]
-  
+
   # GW 11 - Median
   [
     {"Brentford 55 - 52 Bournemouth"},
@@ -318,7 +339,558 @@ defmodule ClashOfClansFpl.Fixtures.FixtureResults do
     {"Spurs 45 - 57 Ipswich"},
     {"Chelsea 55 - 53 Arsenal"}
   ]
-  
+
+  # GW 12 duplicates
+  %{
+    %{fpl_id: 114_067, p_name: "FPL HQ", t_name: "Clash Of Clans admin"} => 20,
+    %{fpl_id: 834_468, p_name: "hedgehogs & berries", t_name: "hhberries"} => 2,
+    %{fpl_id: 3_060_242, p_name: "Ruslan Shakiryanov", t_name: "Frequency 102"} => 3
+  }
+
+  # GW 12 - Average
+  [
+    {"Leicester 59 - 54 Chelsea"},
+    {"Arsenal 56 - 48 Nott'm Forest"},
+    {"Aston Villa 56 - 50 Crystal Palace"},
+    {"Bournemouth 61 - 53 Brighton"},
+    {"Everton 59 - 70 Brentford"},
+    {"Fulham 57 - 66 Wolves"},
+    {"Man City 49 - 54 Spurs"},
+    {"Southampton 60 - 53 Liverpool"},
+    {"Ipswich 59 - 52 Man Utd"},
+    {"Newcastle 50 - 50 West Ham"}
+  ]
+
+  # GW 12 - Median
+  [
+    {"Leicester 58 - 54 Chelsea"},
+    {"Arsenal 55 - 45 Nott'm Forest"},
+    {"Aston Villa 55 - 51 Crystal Palace"},
+    {"Bournemouth 56 - 51 Brighton"},
+    {"Everton 52 - 74 Brentford"},
+    {"Fulham 59 - 67 Wolves"},
+    {"Man City 52 - 53 Spurs"},
+    {"Southampton 57 - 53 Liverpool"},
+    {"Ipswich 61 - 53 Man Utd"},
+    {"Newcastle 53 - 43 West Ham"}
+  ]
+
+  # GW 13 duplicates
+  %{
+    %{fpl_id: 114_067, t_name: "Clash Of Clans admin", p_name: "FPL HQ"} => 20,
+    %{fpl_id: 834_468, t_name: "hhberries", p_name: "hedgehogs & berries"} => 2,
+    %{fpl_id: 3_060_242, t_name: "Frequency 102", p_name: "Ruslan Shakiryanov"} => 3,
+    %{fpl_id: 7_385_691, t_name: "GenerationOfMiracles", p_name: "Daulet Turgynbek"} => 2
+  }
+
+  # GW 13 - Average
+  [
+    {"Brighton 73 - 69 Southampton"},
+    {"Brentford 81 - 73 Leicester"},
+    {"Crystal Palace 67 - 61 Newcastle"},
+    {"Nott'm Forest 72 - 79 Ipswich"},
+    {"Wolves 80 - 71 Bournemouth"},
+    {"West Ham 64 - 75 Arsenal"},
+    {"Chelsea 70 - 68 Aston Villa"},
+    {"Man Utd 68 - 73 Everton"},
+    {"Spurs 73 - 78 Fulham"},
+    {"Liverpool 69 - 73 Man City"}
+  ]
+
+  # GW 13 - Median
+  [
+    {"Brighton 71 - 71 Southampton"},
+    {"Brentford 87 - 76 Leicester"},
+    {"Crystal Palace 66 - 64 Newcastle"},
+    {"Nott'm Forest 76 - 83 Ipswich"},
+    {"Wolves 72 - 66 Bournemouth"},
+    {"West Ham 60 - 73 Arsenal"},
+    {"Chelsea 72 - 67 Aston Villa"},
+    {"Man Utd 66 - 77 Everton"},
+    {"Spurs 68 - 84 Fulham"},
+    {"Liverpool 68 - 73 Man City"}
+  ]
+
+  # GW 14 - Duplicates
+  %{
+    %{fpl_id: 114_067, p_name: "FPL HQ", t_name: "Clash Of Clans admin"} => 20,
+    %{fpl_id: 834_468, p_name: "hedgehogs & berries", t_name: "hhberries"} => 2,
+    %{fpl_id: 3_060_242, p_name: "Ruslan Shakiryanov", t_name: "Frequency 102"} => 3,
+    %{fpl_id: 7_385_691, p_name: "Daulet Turgynbek", t_name: "GenerationOfMiracles"} => 2
+  }
+
+  # GW 14 - Average
+  [
+    {"Ipswich 64 - 57 Crystal Palace"},
+    {"Leicester 59 - 52 West Ham"},
+    {"Everton 66 - 60 Wolves"},
+    {"Man City 56 - 54 Nott'm Forest"},
+    {"Newcastle 61 - 63 Liverpool"},
+    {"Southampton 65 - 58 Chelsea"},
+    {"Arsenal 59 - 55 Man Utd"},
+    {"Aston Villa 65 - 69 Brentford"},
+    {"Fulham 60 - 62 Brighton"},
+    {"Bournemouth 66 - 58 Spurs"}
+  ]
+
+  # GW 14 - Median
+  [
+    {"Ipswich 64 - 59 Crystal Palace"},
+    {"Leicester 57 - 55 West Ham"},
+    {"Everton 65 - 57 Wolves"},
+    {"Man City 57 - 54 Nott'm Forest"},
+    {"Newcastle 63 - 63 Liverpool"},
+    {"Southampton 67 - 59 Chelsea"},
+    {"Arsenal 59 - 54 Man Utd"},
+    {"Aston Villa 62 - 71 Brentford"},
+    {"Fulham 56 - 62 Brighton"},
+    {"Bournemouth 67 - 57 Spurs"}
+  ]
+
+  # GW 15 - Duplicates
+  %{
+    %{fpl_id: 834_468, t_name: "hhberries", p_name: "hedgehogs & berries"} => 2,
+    %{fpl_id: 7_385_691, t_name: "GenerationOfMiracles", p_name: "Daulet Turgynbek"} => 2
+  }
+
+  # GW 15 - Average
+  [
+    {"Aston Villa 54 - 47 Southampton"},
+    {"Brentford 54 - 54 Newcastle"},
+    {"Crystal Palace 53 - 50 Man City"},
+    {"Man Utd 53 - 58 Nott'm Forest"},
+    {"Fulham 54 - 51 Arsenal"},
+    {"Ipswich 58 - 58 Bournemouth"},
+    {"Leicester 53 - 59 Brighton"},
+    {"Spurs 54 - 54 Chelsea"},
+    {"West Ham 68 - 50 Wolves"},
+    {"Everton 52 - 54 Liverpool"}
+  ]
+
+  # GW 15 - Median
+  [
+    {"Aston Villa 55 - 41 Southampton"},
+    {"Brentford 52 - 56 Newcastle"},
+    {"Crystal Palace 51 - 46 Man City"},
+    {"Man Utd 54 - 57 Nott'm Forest"},
+    {"Fulham 50 - 50 Arsenal"},
+    {"Ipswich 56 - 52 Bournemouth"},
+    {"Leicester 51 - 61 Brighton"},
+    {"Spurs 56 - 55 Chelsea"},
+    {"West Ham 75 - 52 Wolves"}
+  ]
+
+  # GW 16 - Duplicates
+  %{
+    %{fpl_id: 488_196, t_name: "PointsHunter", p_name: "Mikhail Zakharin"} => 2,
+    %{fpl_id: 834_468, t_name: "hhberries", p_name: "hedgehogs & berries"} => 2,
+    %{fpl_id: 7_385_691, t_name: "GenerationOfMiracles", p_name: "Daulet Turgynbek"} => 2
+  }
+
+  # GW 16 - Average
+  [
+    {"Arsenal 53 - 48 Everton"},
+    {"Liverpool 50 - 50 Fulham"},
+    {"Newcastle 49 - 51 Leicester"},
+    {"Wolves 54 - 54 Ipswich"},
+    {"Nott'm Forest 45 - 52 Aston Villa"},
+    {"Brighton 46 - 49 Crystal Palace"},
+    {"Man City 47 - 49 Man Utd"},
+    {"Chelsea 51 - 57 Brentford"},
+    {"Southampton 42 - 48 Spurs"},
+    {"Bournemouth 59 - 53 West Ham"},
+    {"Everton 48 - 50 Liverpool"}
+  ]
+
+  # GW 16 - Median
+  [
+    {"Arsenal 54 - 46 Everton"},
+    {"Liverpool 50 - 47 Fulham"},
+    {"Newcastle 49 - 47 Leicester"},
+    {"Wolves 54 - 52 Ipswich"},
+    {"Nott'm Forest 46 - 50 Aston Villa"},
+    {"Brighton 46 - 47 Crystal Palace"},
+    {"Man City 48 - 50 Man Utd"},
+    {"Chelsea 51 - 55 Brentford"},
+    {"Southampton 40 - 44 Spurs"},
+    {"Bournemouth 62 - 60 West Ham"}
+  ]
+
+  # GW 17 - Duplicates. The same
+
+  # GW 17 - Average
+  [
+    {"Aston Villa 81 - 72 Man City"},
+    {"Brentford 73 - 68 Nott'm Forest"},
+    {"Ipswich 82 - 77 Newcastle"},
+    {"West Ham 65 - 75 Brighton"},
+    {"Crystal Palace 86 - 78 Arsenal"},
+    {"Everton 81 - 71 Chelsea"},
+    {"Fulham 77 - 65 Southampton"},
+    {"Leicester 84 - 83 Wolves"},
+    {"Man Utd 66 - 78 Bournemouth"},
+    {"Spurs 74 - 80 Liverpool"}
+  ]
+
+  # GW 17 - Median
+  [
+    {"Aston Villa 83 - 70 Man City"},
+    {"Brentford 76 - 68 Nott'm Forest"},
+    {"Ipswich 87 - 77 Newcastle"},
+    {"West Ham 68 - 73 Brighton"},
+    {"Crystal Palace 81 - 81 Arsenal"},
+    {"Everton 89 - 71 Chelsea"},
+    {"Fulham 83 - 50 Southampton"},
+    {"Leicester 90 - 86 Wolves"},
+    {"Man Utd 71 - 81 Bournemouth"},
+    {"Spurs 74 - 82 Liverpool"}
+  ]
+
+  # GW 18 - Duplicates
+  %{
+    %{fpl_id: 488_196, t_name: "PointsHunter", p_name: "Mikhail Zakharin"} => 2,
+    %{fpl_id: 834_468, t_name: "hhberries", p_name: "hedgehogs & berries"} => 2,
+    %{fpl_id: 4_570_154, t_name: "aktubinec_04", p_name: "Ergazy Abdigazy"} => 2,
+    %{fpl_id: 7_385_691, t_name: "GenerationOfMiracles", p_name: "Daulet Turgynbek"} => 2
+  }
+
+  # GW 18 Average
+  [
+    {"Man City 52 - 62 Everton"},
+    {"Bournemouth 67 - 55 Crystal Palace"},
+    {"Chelsea 61 - 57 Fulham"},
+    {"Newcastle 61 - 59 Aston Villa"},
+    {"Nott'm Forest 53 - 59 Spurs"},
+    {"Southampton 55 - 66 West Ham"},
+    {"Wolves 63 - 54 Man Utd"},
+    {"Liverpool 60 - 70 Leicester"},
+    {"Brighton 62 - 61 Brentford"},
+    {"Arsenal 63 - 66 Ipswich"}
+  ]
+
+  # GW 18 Median
+  [
+    {"Man City 53 - 62 Everton"},
+    {"Bournemouth 70 - 52 Crystal Palace"},
+    {"Chelsea 62 - 56 Fulham"},
+    {"Newcastle 60 - 57 Aston Villa"},
+    {"Nott'm Forest 54 - 57 Spurs"},
+    {"Southampton 57 - 64 West Ham"},
+    {"Wolves 63 - 57 Man Utd"},
+    {"Liverpool 61 - 75 Leicester"},
+    {"Brighton 61 - 63 Brentford"},
+    {"Arsenal 65 - 64 Ipswich"}
+  ]
+
+  # GW 19 Average
+  [
+    {"Leicester 71 - 74 Man City"},
+    {"Crystal Palace 77 - 73 Southampton"},
+    {"Everton 80 - 72 Nott'm Forest"},
+    {"Fulham 73 - 70 Bournemouth"},
+    {"Spurs 71 - 69 Wolves"},
+    {"West Ham 61 - 82 Liverpool"},
+    {"Aston Villa 72 - 66 Brighton"},
+    {"Ipswich 75 - 75 Chelsea"},
+    {"Man Utd 69 - 70 Newcastle"},
+    {"Brentford 69 - 73 Arsenal"}
+  ]
+
+  # GW 19 Median
+  [
+    {"Leicester 70 - 76 Man City"},
+    {"Crystal Palace 77 - 78 Southampton"},
+    {"Everton 80 - 78 Nott'm Forest"},
+    {"Fulham 74 - 74 Bournemouth"},
+    {"Spurs 76 - 69 Wolves"},
+    {"West Ham 67 - 83 Liverpool"},
+    {"Aston Villa 74 - 76 Brighton"},
+    {"Ipswich 76 - 75 Chelsea"},
+    {"Man Utd 70 - 67 Newcastle"},
+    {"Brentford 66 - 73 Arsenal"}
+  ]
+
+  # GW 20 - Average
+  [
+    {"Spurs 66 - 62 Newcastle"},
+    {"Aston Villa 59 - 64 Leicester"},
+    {"Bournemouth 70 - 71 Everton"},
+    {"Crystal Palace 62 - 63 Chelsea"},
+    {"Man City 67 - 64 West Ham"},
+    {"Southampton 72 - 60 Brentford"},
+    {"Brighton 67 - 61 Arsenal"},
+    {"Fulham 59 - 62 Ipswich"},
+    {"Liverpool 64 - 61 Man Utd"},
+    {"Wolves 61 - 62 Nott'm Forest"}
+  ]
+
+  # GW 21 - average
+  [
+    {"Brentford 71 - 67 Man City"},
+    {"Chelsea 69 - 64 Bournemouth"},
+    {"West Ham 82 - 73 Fulham"},
+    {"Nott'm Forest 68 - 69 Liverpool"},
+    {"Everton 67 - 66 Aston Villa"},
+    {"Leicester 76 - 70 Crystal Palace"},
+    {"Newcastle 56 - 65 Wolves"},
+    {"Arsenal 70 - 66 Spurs"},
+    {"Ipswich 71 - 67 Brighton"},
+    {"Man Utd 68 - 61 Southampton"}
+  ]
+
+  # GW 22 - average
+  [
+    {"Newcastle 44 - 38 Bournemouth"},
+    {"Brentford 42 - 50 Liverpool"},
+    {"Leicester 52 - 45 Fulham"},
+    {"West Ham 46 - 57 Crystal Palace"},
+    {"Arsenal 46 - 48 Aston Villa"},
+    {"Everton 43 - 48 Spurs"},
+    {"Man Utd 49 - 39 Brighton"},
+    {"Nott'm Forest 42 - 47 Southampton"},
+    {"Ipswich 48 - 47 Man City"},
+    {"Chelsea 43 - 45 Wolves"}
+  ]
+
+  # GW 23 - average
+  [
+    {"Bournemouth 66 - 65 Nott'm Forest"},
+    {"Brighton 59 - 66 Everton"},
+    {"Liverpool 62 - 71 Ipswich"},
+    {"Southampton 59 - 68 Newcastle"},
+    {"Wolves 68 - 66 Arsenal"},
+    {"Man City 62 - 63 Chelsea"},
+    {"Crystal Palace 62 - 63 Brentford"},
+    {"Spurs 64 - 65 Leicester"},
+    {"Aston Villa 62 - 64 West Ham"},
+    {"Fulham 62 - 62 Man Utd"}
+  ]
+
+  # Gw 24 average
+  [
+    {"Nott'm Forest 117 - 122 Brighton"},
+    {"Bournemouth 107 - 118 Liverpool"},
+    {"Everton 113 - 120 Leicester"},
+    {"Ipswich 116 - 118 Southampton"},
+    {"Newcastle 111 - 119 Fulham"},
+    {"Wolves 123 - 124 Aston Villa"},
+    {"Brentford 112 - 118 Spurs"},
+    {"Man Utd 109 - 133 Crystal Palace"},
+    {"Arsenal 122 - 118 Man City"},
+    {"Chelsea 113 - 120 West Ham"}
+  ]
+
+  # gw 24 median
+  [
+    {"Nott'm Forest 117 - 125 Brighton"},
+    {"Bournemouth 109 - 119 Liverpool"},
+    {"Everton 117 - 122 Leicester"},
+    {"Ipswich 121 - 121 Southampton"},
+    {"Newcastle 105 - 113 Fulham"},
+    {"Wolves 125 - 123 Aston Villa"},
+    {"Brentford 113 - 123 Spurs"},
+    {"Man Utd 114 - 140 Crystal Palace"},
+    {"Arsenal 124 - 131 Man City"},
+    {"Chelsea 118 - 117 West Ham"},
+    {"Everton 117 - 119 Liverpool"}
+  ]
+
+  # gw 25
+  [
+    {"Brighton 85 - 91 Chelsea"},
+    {"Leicester 96 - 94 Arsenal"},
+    {"Aston Villa 101 - 91 Ipswich"},
+    {"Fulham 93 - 88 Nott'm Forest"},
+    {"Man City 90 - 84 Newcastle"},
+    {"Southampton 90 - 77 Bournemouth"},
+    {"West Ham 90 - 89 Brentford"},
+    {"Crystal Palace 86 - 93 Everton"},
+    {"Liverpool 93 - 95 Wolves"},
+    {"Spurs 87 - 86 Man Utd"}
+  ]
+
+  # gw 26
+  [
+    {"Leicester 82 - 83 Brentford"},
+    {"Everton 73 - 75 Man Utd"},
+    {"Arsenal 75 - 89 West Ham"},
+    {"Bournemouth 75 - 81 Wolves"},
+    {"Fulham 83 - 82 Crystal Palace"},
+    {"Ipswich 90 - 77 Spurs"},
+    {"Southampton 80 - 77 Brighton"},
+    {"Aston Villa 82 - 76 Chelsea"},
+    {"Newcastle 75 - 75 Nott'm Forest"},
+    {"Man City 74 - 80 Liverpool"}
+  ]
+
+  # gw 27
+  [
+    {"Brighton 61 - 51 Bournemouth"},
+    {"Crystal Palace 53 - 46 Aston Villa"},
+    {"Wolves 58 - 56 Fulham"},
+    {"Chelsea 54 - 60 Southampton"},
+    {"Brentford 54 - 57 Everton"},
+    {"Man Utd 56 - 58 Ipswich"},
+    {"Nott'm Forest 52 - 56 Arsenal"},
+    {"Spurs 57 - 56 Man City"},
+    {"Liverpool 57 - 50 Newcastle"},
+    {"West Ham 56 - 55 Leicester"}
+  ]
+
+  # gw 28
+  [
+    {"Nott'm Forest 55 - 57 Man City"},
+    {"Brighton 62 - 61 Fulham"},
+    {"Crystal Palace 56 - 52 Ipswich"},
+    {"Liverpool 59 - 67 Southampton"},
+    {"Brentford 61 - 54 Aston Villa"},
+    {"Wolves 58 - 61 Everton"},
+    {"Chelsea 57 - 57 Leicester"},
+    {"Spurs 55 - 64 Bournemouth"},
+    {"Man Utd 58 - 58 Arsenal"},
+    {"West Ham 67 - 62 Newcastle"}
+  ]
+
+  # gw 29
+  [
+    {"Everton 55 - 43 West Ham"},
+    {"Ipswich 42 - 50 Nott'm Forest"},
+    {"Man City 50 - 39 Brighton"},
+    {"Southampton 56 - 70 Wolves"},
+    {"Bournemouth 43 - 50 Brentford"},
+    {"Arsenal 45 - 49 Chelsea"},
+    {"Fulham 42 - 41 Spurs"},
+    {"Leicester 52 - 49 Man Utd"},
+    {"Aston Villa 47 - 42 Liverpool"},
+    {"Newcastle 40 - 38 Crystal Palace"}
+  ]
+
+  # gw 30
+  [
+    {"Arsenal 50 - 51 Fulham"},
+    {"Wolves 58 - 53 West Ham"},
+    {"Nott'm Forest 50 - 46 Man Utd"},
+    {"Bournemouth 57 - 49 Ipswich"},
+    {"Brighton 49 - 48 Aston Villa"},
+    {"Man City 50 - 53 Leicester"},
+    {"Newcastle 48 - 49 Brentford"},
+    {"Southampton 58 - 46 Crystal Palace"},
+    {"Liverpool 51 - 52 Everton"},
+    {"Chelsea 51 - 49 Spurs"}
+  ]
+
+  # gw 31
+  [
+    {"Everton 41 - 45 Arsenal"},
+    {"Crystal Palace 51 - 49 Brighton"},
+    {"Ipswich 52 - 36 Wolves"},
+    {"West Ham 41 - 44 Bournemouth"},
+    {"Aston Villa 53 - 42 Nott'm Forest"},
+    {"Brentford 44 - 42 Chelsea"},
+    {"Fulham 48 - 47 Liverpool"},
+    {"Spurs 45 - 48 Southampton"},
+    {"Man Utd 43 - 43 Man City"},
+    {"Leicester 49 - 43 Newcastle"}
+  ]
+
+  # gw 32
+  [
+    {"Man City 73 - 69 Crystal Palace"},
+    {"Brighton 70 - 87 Leicester"},
+    {"Nott'm Forest 65 - 76 Everton"},
+    {"Southampton 78 - 85 Aston Villa"},
+    {"Arsenal 73 - 77 Brentford"},
+    {"Chelsea 75 - 79 Ipswich"},
+    {"Liverpool 73 - 68 West Ham"},
+    {"Wolves 67 - 73 Spurs"},
+    {"Newcastle 65 - 69 Man Utd"},
+    {"Bournemouth 68 - 77 Fulham"}
+  ]
+
+  # gw 33
+  [
+    {"Brentford 67 - 57 Brighton"},
+    {"Crystal Palace 63 - 59 Bournemouth"},
+    {"Everton 65 - 70 Man City"},
+    {"West Ham 71 - 73 Southampton"},
+    {"Aston Villa 83 - 67 Newcastle"},
+    {"Fulham 65 - 64 Chelsea"},
+    {"Ipswich 75 - 67 Arsenal"},
+    {"Man Utd 64 - 65 Wolves"},
+    {"Leicester 74 - 69 Liverpool"},
+    {"Spurs 63 - 59 Nott'm Forest"}
+  ]
+
+  # gw 34
+  [
+    {"Chelsea 67 - 69 Everton"},
+    {"Brighton 67 - 59 West Ham"},
+    {"Newcastle 68 - 67 Ipswich"},
+    {"Southampton 70 - 81 Fulham"},
+    {"Wolves 82 - 80 Leicester"},
+    {"Bournemouth 62 - 65 Man Utd"},
+    {"Liverpool 72 - 67 Spurs"},
+    {"Nott'm Forest 67 - 69 Brentford"},
+    {"Man City 71 - 83 Aston Villa"},
+    {"Arsenal 69 - 75 Crystal Palace"}
+  ]
+
+  # gw 35
+  [
+    {"Man City 47 - 42 Wolves"},
+    {"Aston Villa 53 - 53 Fulham"},
+    {"Everton 42 - 48 Ipswich"},
+    {"Leicester 46 - 47 Southampton"},
+    {"Arsenal 46 - 42 Bournemouth"},
+    {"Brentford 44 - 43 Man Utd"},
+    {"Brighton 48 - 52 Newcastle"},
+    {"West Ham 42 - 47 Spurs"},
+    {"Chelsea 47 - 43 Liverpool"},
+    {"Crystal Palace 50 - 43 Nott'm Forest"}
+  ]
+
+  # gw 36
+  [
+    {"Fulham 60 - 50 Everton"},
+    {"Ipswich 53 - 52 Brentford"},
+    {"Southampton 53 - 56 Man City"},
+    {"Wolves 58 - 55 Brighton"},
+    {"Bournemouth 43 - 55 Aston Villa"},
+    {"Newcastle 59 - 50 Chelsea"},
+    {"Man Utd 50 - 55 West Ham"},
+    {"Nott'm Forest 53 - 48 Leicester"},
+    {"Spurs 53 - 56 Crystal Palace"},
+    {"Liverpool 51 - 55 Arsenal"}
+  ]
+
+  # gw 37
+  [
+    {"Aston Villa 60 - 49 Spurs"},
+    {"Chelsea 51 - 48 Man Utd"},
+    {"Everton 54 - 54 Southampton"},
+    {"West Ham 48 - 42 Nott'm Forest"},
+    {"Brentford 41 - 51 Fulham"},
+    {"Leicester 51 - 59 Ipswich"},
+    {"Arsenal 52 - 52 Newcastle"},
+    {"Brighton 51 - 52 Liverpool"},
+    {"Crystal Palace 49 - 44 Wolves"},
+    {"Man City 52 - 44 Bournemouth"}
+  ]
+
+  # gw 38
+  [
+    {"Bournemouth 55 - 56 Leicester"},
+    {"Fulham 60 - 57 Man City"},
+    {"Ipswich 51 - 49 West Ham"},
+    {"Liverpool 55 - 49 Crystal Palace"},
+    {"Man Utd 50 - 55 Aston Villa"},
+    {"Newcastle 54 - 58 Everton"},
+    {"Nott'm Forest 56 - 51 Chelsea"},
+    {"Southampton 55 - 51 Arsenal"},
+    {"Spurs 51 - 57 Brighton"},
+    {"Wolves 52 - 53 Brentford"}
+  ]
+
   ################################################
   # Season 2023/2024 data
   ################################################

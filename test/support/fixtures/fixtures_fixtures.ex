@@ -19,7 +19,9 @@ defmodule ClashOfClansFpl.FixturesFixtures do
         team_h_manager_count: 42,
         team_home_id: 42,
         team_home_name: "some team_home_name",
-        team_home_score: 42
+        team_home_score: 42,
+        team_h_avg_hits: 0.0,
+        team_a_avg_hits: 0.0
       })
       |> ClashOfClansFpl.Fixtures.create_fixture()
 

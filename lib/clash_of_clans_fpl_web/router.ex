@@ -43,12 +43,20 @@ defmodule ClashOfClansFplWeb.Router do
 
     live "/managers/:id", ManagerLive.Show, :show
     live "/managers/:id/show/edit", ManagerLive.Show, :edit
+
+    # MVP
+    live "/mvp/:gameweek", MvpLive, :show
+
+    # Managers Panel (for image generation)
+    live "/managers-panel/:gameweek", ManagersPanelLive, :show
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", ClashOfClansFplWeb do
-  #   pipe_through :api
-  # end
+  # API routes (health check, etc.)
+  scope "/api", ClashOfClansFplWeb do
+    pipe_through :api
+
+    get "/health", HealthController, :index
+  end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:clash_of_clans_fpl, :dev_routes) do

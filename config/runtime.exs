@@ -65,6 +65,12 @@ if config_env() == :prod do
     ],
     secret_key_base: secret_key_base
 
+  # Scheduler configuration
+  # Enable scheduler in production with ENABLE_SCHEDULER=true
+  if System.get_env("ENABLE_SCHEDULER") == "true" do
+    config :clash_of_clans_fpl, enable_scheduler: true
+  end
+
   # ## SSL Support
   #
   # To get SSL working, you will need to add the `https` key

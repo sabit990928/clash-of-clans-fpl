@@ -9,7 +9,9 @@ import Config
 
 config :clash_of_clans_fpl,
   ecto_repos: [ClashOfClansFpl.Repo],
-  generators: [timestamp_type: :utc_datetime]
+  generators: [timestamp_type: :utc_datetime],
+  # Scheduler is disabled by default (enable in production via ENABLE_SCHEDULER=true)
+  enable_scheduler: false
 
 # Configures the endpoint
 config :clash_of_clans_fpl, ClashOfClansFplWeb.Endpoint,
